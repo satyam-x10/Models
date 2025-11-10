@@ -39,9 +39,9 @@ jobs:
           pip install diffusers transformers accelerate safetensors pillow
 
       # 5️⃣ Run your Kandinsky script
-      - name: Run kandinsky_low.py
+      - name: Run Kandinsky_low.py
         run: |
-          python kandinsky_low.py
+          python Kandinsky_low.py
 
       # 6️⃣ Upload generated image as artifact
       - name: Upload Kandinsky result
