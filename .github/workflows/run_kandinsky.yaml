@@ -1,0 +1,51 @@
+name: Run Kandinsky Low Script
+
+on:
+  workflow_dispatch: # allows manual trigger
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  run-kandinsky:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      # 3️⃣ Cache Python dependencies
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # 4️⃣ Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install diffusers transformers accelerate safetensors pillow
+
+      # 5️⃣ Run your Kandinsky script
+      - name: Run kandinsky_low.py
+        run: |
+          python kandinsky_low.py
+
+      # 6️⃣ Upload generated image as artifact
+      - name: Upload Kandinsky result
+        uses: actions/upload-artifact@v4
+        with:
+          name: kandinsky_result
+          path: kandinsky_result_16x9.png
