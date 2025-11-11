@@ -30,11 +30,12 @@ image = pipe(
     prompt=prompt,
     image_embeds=image_embeds,
     negative_image_embeds=negative_image_embeds,
-    num_inference_steps=30,   # More steps = better quality
-    guidance_scale=8.0,       # Adjusts prompt adherence
-    width=1920,               # 16:9 resolution width
-    height=1080               # 16:9 resolution height
+    num_inference_steps=15,   # fewer steps → faster, less quality
+    guidance_scale=6.0,       # lower guidance → smoother but less strict
+    width=1280,               # smaller 16:9 (HD)
+    height=720
 ).images[0]
+
 
 # ---- Save the result ----
 image.save("kandinsky_result_16x9.png")
